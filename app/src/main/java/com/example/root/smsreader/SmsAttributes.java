@@ -43,32 +43,32 @@ public class SmsAttributes {
             Log.v("Test1", "In func getINR");
 Log.v("Test1","Actual Sring is "+s);
 
-            if (s.contains(" INR ")) {
-                Log.v("Test1", "String contains INR ");
-                len = s.indexOf("INR");
-                Log.v("Test1","index of INR is ;"+len);
+            if (s.contains(" mINR ")) {
+                Log.v("Test1", "String contains mINR ");
+                len = s.indexOf("mINR");
+                Log.v("Test1","index of mINR is ;"+len);
 try {
-inr1 = s.substring(s.indexOf("INR"));
-    Log.v("Test1","String from INR is "+inr1);
+inr1 = s.substring(s.indexOf("mINR"));
+    Log.v("Test1","String from mINR is "+inr1);
 
     len = inr1.length();
-    Log.v("Test1","Length of INR String  is ;"+len);
-    inr1 = s.substring(s.indexOf(" INR ") + 4);
-    Log.v("Test1","String from INR is "+inr1);
+    Log.v("Test1","Length of mINR String  is ;"+len);
+    inr1 = s.substring(s.indexOf(" mINR ") + 4);
+    Log.v("Test1","String from mINR is "+inr1);
     inr2 = inr1.substring(inr1.indexOf(" "),inr1.indexOf(".")+3);
     Log.v("Test1","String from space to .  is "+inr2);
     len=inr2.length();
-    Log.v("Test1","Length of INR String till . is ;"+len);
+    Log.v("Test1","Length of mINR String till . is ;"+len);
 
 
 
    }catch(Exception e){
     e.getMessage();
-    Log.v("Test1", "Something went wrong in INR func. ");
+    Log.v("Test1", "Something went wrong in mINR func. ");
     Log.e("Test1", "The error is :"+e.getMessage());
 
 }
-                Log.v("Test1", "INR is " + inr);
+                Log.v("Test1", "mINR is " + inr);
 
             } else if (s.contains(" Rs ")) {
                 Log.v("Test1", "String contains Rs");
@@ -78,7 +78,7 @@ inr1 = s.substring(s.indexOf("INR"));
 
             } else {
 
-                Log.v("Test1", " String does not contain INR nor Rs keyword");
+                Log.v("Test1", " String does not contain mINR nor Rs keyword");
             }
         }catch (Exception e ){
             e.getMessage();
@@ -165,7 +165,7 @@ try {
 
 
     public void DisplayAllValues(String INR , String Date , String place){
-        Log.v("Test", " INR is :"+ INR);
+        Log.v("Test", " mINR is :"+ INR);
         Log.v("Test", " Date is :"+ Date);
         Log.v("Test", " place is :"+ place);
 

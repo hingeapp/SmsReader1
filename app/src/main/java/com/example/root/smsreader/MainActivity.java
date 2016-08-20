@@ -1,18 +1,11 @@
 package com.example.root.smsreader;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,102 +15,101 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-public  int len_all_sms = 0;
-public int Count=0;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    // Member variables have prefix "m". rest of the name uses CamelCase
+public  int mLenAllSms = 0;
+public int mCount = 0;
 
 
-    public String INR[] ;
-    ListView L1 ;
-    TextView count;
-    Button analysis;
+    public String mINR[] ;
+    ListView mLvSms;
+    TextView mTvCount; // for TextView, add Tv after prefix of "m"
+    Button mBtnAnalysis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Log.v("Test", "List view initialized");
-        List<String> s;
-        s = readSms();
-        len_all_sms = s.size();
-        Log.v("Test", "readSms func called");
-        Log.v("Test", " "+ len_all_sms +" objects will be created now .....");
+        Log.d(TAG, "List view initialized"); //use Log.d() . this is not run during in release builds. Logging affects performance
+        List<String> smsList;
+        smsList = readSms();
+        mLenAllSms = smsList.size();
+        Log.d(TAG, "readSms func called");
+        Log.d(TAG, " "+ mLenAllSms +" objects will be created now .....");
 
-        SmsAttributes[] smsAttributes = new SmsAttributes[len_all_sms];
-        Log.v("Test", len_all_sms+" Objects created successfully...");
+        SmsAttributes[] smsAttributes = new SmsAttributes[mLenAllSms];
+        Log.d(TAG, mLenAllSms +" Objects created successfully...");
 
         try {
-    //L1 = (ListView) findViewById(R.id.listView);
-    count = (TextView)findViewById(R.id.textView3);
+            //mLvSms = (ListView) findViewById(R.id.listView);
+            mTvCount = (TextView)findViewById(R.id.textView3);
+        
+            String messageCsv = ""; // use camelCase for naming variables
+        
+            Log.d(TAG, "going inside a for loop");
+        
+            for(int smsIndex =0 ; smsIndex < smsList.size(); smsIndex++){
+                Log.d(TAG, "In the for loop to call d class with index "+smsIndex);
+        
+                String get = smsList.get(smsIndex);
+                smsAttributes[smsIndex] = new SmsAttributes(get);
+                Log.d(TAG, " obj sucess and constructor called....");
+        
+            }
+        
+        
+            for (int smsIndex = 0; smsIndex < smsList.size(); smsIndex++) {
+                Log.d(TAG, "Inside a for loop now ......... splitting....");
+                messageCsv += smsList.get(smsIndex) + ",";
+            }
+            Log.d(TAG, " **************** Display **************");
+        
+            for(int j=0 ; j< smsList.size() ; j++){
+                Log.d(TAG, "Date for object "+ smsAttributes[j] + " is "+smsAttributes[j].mydate);
+                Log.d(TAG, "mINR for object "+ smsAttributes[j] + " is "+smsAttributes[j].INR);
+                Log.d(TAG, "Place for object "+ smsAttributes[j] + " is "+smsAttributes[j].place);
+        
+            }
+        
+            String messageArray[];
+        
+            messageArray = messageCsv.split(",");
+        
+            Log.d(TAG, "splitting done.....");
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, messageArray);
+        
+            Log.d(TAG, "ArrayAdapter initialized ......");
+           // mLvSms.setAdapter(adapter);
+        
+            Log.d(TAG, "list view shud show something now !!!");
+
+            Log.d(TAG, "mCount value converted to String ...");
+            Log.d(TAG, mCount + " is the mTvCount integer...");
+
+           // Log.d(TAG, mCount+ " is the mTvCount string...");
+
+            mTvCount.setText(mCount);
+            Log.d(TAG, "mCount value set successfully .....");
 
 
+    }catch(Exception e){
+        e.getMessage();
 
-
-
-
-    String messagecsv = "";
-
-    Log.v("Test", "going inside a for loop");
-
-    for(int index =0 ; index < s.size(); index++){
-        Log.v("Test", "In the for loop to call d class with index "+index);
-
-        String get = s.get(index);
-       smsAttributes[index] = new SmsAttributes(get);
-        Log.v("Test", " obj sucess and constructor called....");
-
+        Log.d(TAG, "Fucked up !!!! Something went wrong !!!" + e.getMessage());
+            // :D Always good to know the error which caused the fuck up. display error using e.getMessage()
     }
 
 
-    for (int i = 0; i < s.size(); i++) {
-        Log.v("Test", "Inside a for loop now ......... splitting....");
-        messagecsv += s.get(i) + ",";
-    }
-    Log.v("Test", " **************** Display **************");
-
-    for(int j=0 ; j< s.size() ; j++){
-        Log.v("Test", "Date for object "+ smsAttributes[j] + " is "+smsAttributes[j].mydate);
-        Log.v("Test", "INR for object "+ smsAttributes[j] + " is "+smsAttributes[j].INR);
-        Log.v("Test", "Place for object "+ smsAttributes[j] + " is "+smsAttributes[j].place);
-
-    }
-
-    String messageArray[];
-
-    messageArray = messagecsv.split(",");
-
-    Log.v("Test", "splitting done.....");
-    //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, messageArray);
-
-    Log.v("Test", "ArrayAdapter initialized ......");
-   // L1.setAdapter(adapter);
-
-    Log.v("Test", "list view shud show something now !!!");
-
-            Log.v("Test", "Count value converted to String ...");
-            Log.v("Test", Count+ " is the count integer...");
-
-           // Log.v("Test", Count+ " is the count string...");
-
-            count.setText(Count);
-            Log.v("Test", "Count value set successfully .....");
-
-
-}catch(Exception e){
-    e.getMessage();
-
-    Log.v("Test", "Fucked up !!!! Something went wrong !!!");
-}
-
-
-    /*    analysis.setOnClickListener(new View.OnClickListener() {
+    /*    mBtnAnalysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("Test","In onclickListener of analysis ........");
+                Log.d(TAG,"In onclickListener of mBtnAnalysis ........");
                 Intent transfer = new Intent(MainActivity.this, Analysis.class);
 
 
-                Log.v("Test", "Starting activity of  a new Intent .......");
+                Log.d(TAG, "Starting activity of  a new Intent .......");
 
                 startActivity(transfer);
 
@@ -125,14 +117,14 @@ public int Count=0;
         });*/
 
 
-        int number_tvs = (len_all_sms*3)+6;
-        Log.v("Test", number_tvs + " text views will be created now ");
+        int number_tvs = (mLenAllSms *3)+6;
+        Log.d(TAG, number_tvs + " text views will be created now ");
 
 
 
         TextView[] textViews = new TextView[number_tvs];
 
-        Log.v("Test", "Tv array initialized.......");
+        Log.d(TAG, "Tv array initialized.......");
 
         textViews[0] = (TextView)findViewById(R.id.textView1);
         textViews[1] = (TextView)findViewById(R.id.textView12);
@@ -150,26 +142,26 @@ public int Count=0;
         textViews[13]= (TextView)findViewById(R.id.textView14);
         textViews[14]= (TextView)findViewById(R.id.textView15);
 
-        Log.v("Test",number_tvs +" textviews are created successfully.........");
+        Log.d(TAG,number_tvs +" textviews are created successfully.........");
         int tcount = 6;
         for (int i = 0; i < 3; i++) {
 
-            Log.v("Test", "In for loop "+ i);
-            Log.v("Test", "Date for  "+ smsAttributes[i] + " is "+smsAttributes[i].mydate);
-            Log.v("Test", "INR for  "+ smsAttributes[i] + " is "+smsAttributes[i].INR);
-            Log.v("Test", "Place for  "+ smsAttributes[i] + " is "+smsAttributes[i].place);
+            Log.d(TAG, "In for loop "+ i);
+            Log.d(TAG, "Date for  "+ smsAttributes[i] + " is "+smsAttributes[i].mydate);
+            Log.d(TAG, "mINR for  "+ smsAttributes[i] + " is "+smsAttributes[i].INR);
+            Log.d(TAG, "Place for  "+ smsAttributes[i] + " is "+smsAttributes[i].place);
 
             textViews[tcount].setText(smsAttributes[i].mydate);
             tcount++;
-            Log.v("Test", "Date set for "+i);
+            Log.d(TAG, "Date set for "+i);
 
             textViews[tcount].setText(smsAttributes[i].INR);
             tcount++;
-            Log.v("Test", "INR set for "+i);
+            Log.d(TAG, "mINR set for "+i);
 
             textViews[tcount].setText(smsAttributes[i].place);
             tcount++;
-            Log.v("Test", "Place  set for "+i);
+            Log.d(TAG, "Place  set for "+i);
 
         }
 
@@ -179,43 +171,43 @@ public int Count=0;
 
 public List<String> readSms(){
 
-                Log.v("Test", "Inside readsms func.....");
-                List<String> sms = new ArrayList<String>();
+            Log.d(TAG, "Inside readsms func.....");
+            List<String> sms = new ArrayList<String>();
 
-                try {
+            try {
 
-                    Log.v("Test", "sms string done ");
-                    Uri geturi = Uri.parse("content://sms/inbox");
+                Log.d(TAG, "sms string done ");
+                Uri geturi = Uri.parse("content://sms/inbox");
 
-                    Log.v("Test", "uri parsed to inbox successfully .....");
-                    Cursor cur = getContentResolver().query(geturi, null, null, null, null);
+                Log.d(TAG, "uri parsed to inbox successfully .....");
+                Cursor cur = getContentResolver().query(geturi, null, null, null, null);
 
-                    Log.v("Test", "cursor obj set ....");
+                Log.d(TAG, "cursor obj set ....");
 
-                    while (cur.moveToNext()) {
-                        Log.v("Test", "inside while loop....");
-                        String address = cur.getString(cur.getColumnIndex("address"));
-                        Log.v("Test", " Address is "+address);
+                while (cur.moveToNext()) {
+                    Log.d(TAG, "inside while loop....");
+                    String address = cur.getString(cur.getColumnIndex("address"));
+                    Log.d(TAG, " Address is "+address);
 
-                        String body = cur.getString(cur.getColumnIndexOrThrow("body"));
-                        Log.v("Test", " Body is " + body);
-                                if(body.contains(" INR ")|| body.contains(" on ") || body.contains(" at ") || body.contains("Rs") ) {
-                                  Count++;
-                                    Log.v("Test", "Incrementing count value to "+ Count);
+                    String body = cur.getString(cur.getColumnIndexOrThrow("body"));
+                    Log.d(TAG, " Body is " + body);
+                            if(body.contains(" mINR ")|| body.contains(" on ") || body.contains(" at ") || body.contains("Rs") ) {
+                              mCount++;
+                                Log.d(TAG, "Incrementing mTvCount value to "+ mCount);
 
-                                    Log.v("Test", "getting string and storing in 'body' string ");
-                                    sms.add(body);
-                                }else{
-                                    Log.v("Test", "msg not added");
-                                    }
-                                            }
-                    Log.v("Test", "outside while loop");
+                                Log.d(TAG, "getting string and storing in 'body' string ");
+                                sms.add(body);
+                            }else{
+                                Log.d(TAG, "msg not added");
+                                }
+                                        }
+                Log.d(TAG, "outside while loop");
 
-                   }catch (Exception e){
-                    Log.v("Test", "Something went wrong in the readsms func ..............  :( ");
+               }catch (Exception e){
+                Log.d(TAG, "Something went wrong in the readsms func ..............  :( ");
 
-                }
-                return sms;
+            }
+            return sms;
         }//end of readsms method
 
 }// end of class .

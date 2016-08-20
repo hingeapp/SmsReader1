@@ -58,7 +58,7 @@ try {
 
         Log.v("Test", "In for loop "+ i);
         Log.v("Test", "Date for  "+ smsAttributes[i] + " is "+smsAttributes[i].mydate);
-        Log.v("Test", "INR for  "+ smsAttributes[i] + " is "+smsAttributes[i].INR);
+        Log.v("Test", "mINR for  "+ smsAttributes[i] + " is "+smsAttributes[i].INR);
         Log.v("Test", "Place for  "+ smsAttributes[i] + " is "+smsAttributes[i].place);
 
         textViews[tcount].setText(smsAttributes[i].mydate);
@@ -67,7 +67,7 @@ try {
 
         textViews[tcount].setText(smsAttributes[i].INR);
         tcount++;
-        Log.v("Test", "INR set for "+i);
+        Log.v("Test", "mINR set for "+i);
 
         textViews[tcount].setText(smsAttributes[i].place);
         tcount++;
